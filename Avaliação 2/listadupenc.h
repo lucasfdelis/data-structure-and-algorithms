@@ -39,17 +39,31 @@ TListaDupEnc *aloca(int valor)
 
 void removeInicio()
 {
-  TListaDupEnc *atual = inicio;
-  inicio = atual->proximo;
-  inicio->anterior = NULL;
-  tamanho--;
+  if (tamanho == 0)
+  {
+    printf("A LISTA ESTÁ VAZIA. IMPOSSÍVEL REMOVER PRIMEIRO ELEMENTO. \n");
+  }
+  else
+  {
+    TListaDupEnc *atual = inicio;
+    inicio = atual->proximo;
+    inicio->anterior = NULL;
+    tamanho--;
+  }
 }
 void removeFim()
 {
-  TListaDupEnc *atual = fim;
-  fim = atual->anterior;
-  fim->proximo = NULL;
-  tamanho--;
+  if (tamanho == 0)
+  {
+    printf("A LISTA ESTÁ VAZIA. IMPOSSÍVEL REMOVER ÚLTIMO ELEMENTO. \n");
+  }
+  else
+  {
+    TListaDupEnc *atual = fim;
+    fim = atual->anterior;
+    fim->proximo = NULL;
+    tamanho--;
+  }
 }
 
 void insereInicio(int valor)
@@ -101,4 +115,20 @@ void imprimeLista()
     printf("%d\n", atual->valor);
     atual = atual->proximo;
   }
+}
+
+void numOcorrencias(int search)
+{
+  TListaDupEnc *atual;
+  int count = 0;
+  atual = inicio;
+  while (atual)
+  {
+    if (atual->valor == search)
+    {
+      count++;
+    }
+    atual = atual->proximo;
+  }
+  printf("Número de vezes que o valor %d apareceu: %d\n", search, count);
 }
