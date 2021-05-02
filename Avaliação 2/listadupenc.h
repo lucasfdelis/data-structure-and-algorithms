@@ -13,22 +13,7 @@ TListaDupEnc *inicio;
 TListaDupEnc *fim;
 int tamanho;
 
-void criaLista();
-TListaDupEnc *aloca(int valor);
-void insereInicio(int valor);
-void insereFim(int valor);
-void removeInicio();
-void removeFim();
-void imprimeLista();
-
-void criaLista()
-{
-  inicio = NULL;
-  fim = NULL;
-  tamanho = 0;
-}
-
-TListaDupEnc *aloca(int valor)
+TListaDupEnc *criaLista(int valor)
 {
   TListaDupEnc *novo = (TListaDupEnc *)malloc(sizeof(TListaDupEnc));
   novo->valor = valor;
@@ -37,7 +22,7 @@ TListaDupEnc *aloca(int valor)
   return novo;
 }
 
-void removeInicio()
+void removeInicio(TListaDupEnc *teste)
 {
   if (tamanho == 0)
   {
@@ -45,13 +30,13 @@ void removeInicio()
   }
   else
   {
-    TListaDupEnc *atual = inicio;
-    inicio = atual->proximo;
+    TListaDupEnc *teste = inicio;
+    inicio = teste->proximo;
     inicio->anterior = NULL;
     tamanho--;
   }
 }
-void removeFim()
+void removeFim(TListaDupEnc *teste)
 {
   if (tamanho == 0)
   {
@@ -66,69 +51,72 @@ void removeFim()
   }
 }
 
-void insereInicio(int valor)
+void insereInicio(int valor, TListaDupEnc *teste)
 {
-  TListaDupEnc *novo = aloca(valor);
-
-  if (inicio == NULL)
+  TListaDupEnc *aux = teste;
+  if (teste->proximo == NULL && teste->anterior == NULL)
   {
-    inicio = novo;
-    fim = novo;
+    TListaDupEnc *nova = criaLista(valor);
+    nova->anterior = teste;
+    teste->proximo = nova;
   }
   else
   {
-    TListaDupEnc *atual;
-    atual = inicio;
-    novo->proximo = atual;
-    atual->anterior = novo;
-    inicio = novo;
+    while (aux->proximo != NULL)
+    {
+      aux = aux->proximo;
+    }
+    TListaDupEnc *nova = criaLista(valor);
+    nova->proximo = aux;
+    aux->anterior = nova;
   }
   tamanho++;
 }
 
-void insereFim(int valor)
+void insereFim(int valor, TListaDupEnc *teste)
 {
-  TListaDupEnc *novo = aloca(valor);
-
-  if (inicio == NULL)
+  TListaDupEnc *aux = teste;
+  if (teste->proximo == NULL && teste->anterior == NULL)
   {
-    inicio = novo;
-    fim = novo;
+    TListaDupEnc *nova = criaLista(valor);
+    nova->anterior = teste;
+    teste->proximo = nova;
   }
   else
   {
-    TListaDupEnc *atual;
-    atual = fim;
-    novo->anterior = atual;
-    atual->proximo = novo;
-    fim = novo;
+    while (aux->proximo != NULL)
+    {
+      aux = aux->proximo;
+    }
+    TListaDupEnc *nova = criaLista(valor);
+    nova->anterior = aux;
+    aux->proximo = nova;
   }
   tamanho++;
 }
 
-void imprimeLista()
+void imprimeLista(TListaDupEnc *teste)
 {
-  TListaDupEnc *atual;
-  atual = inicio;
-  while (atual)
+  TListaDupEnc *aux = teste;
+  while (aux != NULL)
   {
-    printf("%d\n", atual->valor);
-    atual = atual->proximo;
+    printf("%d, ", aux->valor);
+    aux = aux->proximo;
   }
+  printf("\n\n");
 }
 
-void numOcorrencias(int search)
+void numOcorrencias(int search, TListaDupEnc *teste)
 {
-  TListaDupEnc *atual;
+  TListaDupEnc *aux = teste;
   int count = 0;
-  atual = inicio;
-  while (atual)
+  while (aux != NULL)
   {
-    if (atual->valor == search)
+    if (aux->valor == search)
     {
       count++;
     }
-    atual = atual->proximo;
+    aux = aux->proximo;
   }
   printf("Número de vezes que o valor %d apareceu: %d\n", search, count);
 }
