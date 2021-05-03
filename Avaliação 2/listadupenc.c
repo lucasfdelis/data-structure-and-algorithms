@@ -52,7 +52,7 @@ int main()
   numOcorrencias(4, l1);
   printf("\n");
   //Gerando uma nova lista a partir da intercalação de nós das outras duas listas.
-  printf("Lista 3, formada pela intercalação de nós das duas listas:");
+  printf("Lista 3, formada pela intercalação de nós das duas listas:\n");
   TListaDupEnc *l3 = merge(l1, l2);
   imprimeLista(l3);
   printf("\n");
