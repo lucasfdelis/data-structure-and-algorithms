@@ -4,96 +4,126 @@
 typedef struct elemento TListaDupEnc;
 struct elemento
 {
-  int data;
-  TListaDupEnc *next;
-  TListaDupEnc *prev;
-  TListaDupEnc *head;
+  int valor;
+  TListaDupEnc *proximo;
+  TListaDupEnc *anterior;
+  TListaDupEnc *inicio;
+  TListaDupEnc *fim;
 };
 
-TListaDupEnc *inicio;
-TListaDupEnc *fim;
 int tamanho;
 
 TListaDupEnc *criaLista()
 {
-  TListaDupEnc *l = (TListaDupEnc *)malloc(sizeof(TListaDupEnc));
-  if (l != NULL)
-  {
-    l->head = NULL;
-    return l;
-  }
-  return NULL;
+  TListaDupEnc *novo = (TListaDupEnc *)malloc(sizeof(TListaDupEnc));
+  novo->inicio = NULL;
+  novo->fim = NULL;
+  tamanho = 0;
 }
 
-TListaDupEnc *criaNodo(int data)
+TListaDupEnc *aloca(int valor)
 {
-  TListaDupEnc *n = (TListaDupEnc *)malloc(sizeof(TListaDupEnc));
-  if (n != NULL)
-  {
-    n->data = data;
-    n->next = NULL;
-    n->prev = NULL;
-    return n;
-  }
-  return NULL;
+  TListaDupEnc *novo = (TListaDupEnc *)malloc(sizeof(TListaDupEnc));
+  novo->valor = valor;
+  novo->anterior = NULL;
+  novo->proximo = NULL;
+  return novo;
 }
 
-int inserirInicio(TListaDupEnc *l, int data)
+void removeInicio(TListaDupEnc *l)
 {
-  if (l != NULL)
+  if (tamanho == 0)
   {
-    TListaDupEnc *n = criaNodo(data);
-    if (l->head == NULL)
-    {
-      l->head = n;
-      n->next = n->prev = n;
-      return 1;
-    }
-    else
-    {
-      TListaDupEnc *last = l->head->next;
-      n->prev = last->prev;
-      l->head->next = n;
-      n->next = last;
-      last->prev = n;
-      return 1;
-    }
+    printf("A LISTA ESTÁ VAZIA. IMPOSSÍVEL REMOVER PRIMEIRO ELEMENTO. \n");
+  }
+  else
+  {
+    TListaDupEnc *atual;
+    atual = l->inicio;
+    l->inicio = atual->proximo;
+    l->inicio->anterior = NULL;
+    tamanho--;
   }
 }
-
-int inserirFim(TListaDupEnc *l, int data)
+void removeFim(TListaDupEnc *l)
 {
-  if (l != NULL)
+  if (tamanho == 0)
   {
-    TListaDupEnc *n = criaNodo(data);
-    if (l->head == NULL)
-    {
-      l->head = n;
-      n->next = n->prev = n;
-      return 1;
-    }
-    else
-    {
-      TListaDupEnc *last = l->head->prev;
-      n->next = last->next;
-      l->head->prev = n;
-      n->prev = last;
-      last->next = n;
-      return 1;
-    }
+    printf("A LISTA ESTÁ VAZIA. IMPOSSÍVEL REMOVER ÚLTIMO ELEMENTO. \n");
+  }
+  else
+  {
+    TListaDupEnc *atual;
+    atual = l->fim;
+    l->fim = atual->anterior;
+    l->fim->proximo = NULL;
+    tamanho--;
   }
 }
 
-void display(TListaDupEnc *l)
+void insereInicio(int valor, TListaDupEnc *l)
 {
-  if (l != NULL && l->head != NULL)
+  TListaDupEnc *novo = aloca(valor);
+
+  if (l->inicio == NULL)
   {
-    TListaDupEnc *temp = l->head;
-    while (temp->next != l->head)
-    {
-      printf("%d ", temp->data);
-      temp = temp->next;
-    }
-    printf("%d ", temp->data);
+    l->inicio = novo;
+    l->fim = novo;
   }
+  else
+  {
+    TListaDupEnc *atual;
+    atual = l->inicio;
+    novo->proximo = atual;
+    atual->anterior = novo;
+    l->inicio = novo;
+  }
+  tamanho++;
+}
+
+void insereFim(int valor, TListaDupEnc *l)
+{
+  TListaDupEnc *novo = aloca(valor);
+
+  if (l->inicio == NULL)
+  {
+    l->inicio = novo;
+    l->fim = novo;
+  }
+  else
+  {
+    TListaDupEnc *atual;
+    atual = l->fim;
+    novo->anterior = atual;
+    atual->proximo = novo;
+    l->fim = novo;
+  }
+  tamanho++;
+}
+
+void imprimeLista(TListaDupEnc *l)
+{
+  TListaDupEnc *atual;
+  atual = l->inicio;
+  while (atual)
+  {
+    printf("%d\n", atual->valor);
+    atual = atual->proximo;
+  }
+}
+
+void numOcorrencias(int search, TListaDupEnc *l)
+{
+  TListaDupEnc *atual;
+  int count = 0;
+  atual = l->inicio;
+  while (atual)
+  {
+    if (atual->valor == search)
+    {
+      count++;
+    }
+    atual = atual->proximo;
+  }
+  printf("Número de vezes que o valor %d apareceu: %d\n", search, count);
 }
