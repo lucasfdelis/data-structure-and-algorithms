@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//LUCAS ALVES FIDELIS ARAÚJO
+
 typedef struct elemento TListaDupEnc;
 struct elemento
 {
@@ -9,6 +11,7 @@ struct elemento
   TListaDupEnc *anterior;
   TListaDupEnc *inicio;
   TListaDupEnc *fim;
+  TListaDupEnc *tamanho;
 };
 
 int tamanho;
@@ -63,6 +66,7 @@ void removeFim(TListaDupEnc *l)
 
 void insereInicio(int valor, TListaDupEnc *l)
 {
+
   TListaDupEnc *novo = aloca(valor);
 
   if (l->inicio == NULL)
@@ -107,9 +111,10 @@ void imprimeLista(TListaDupEnc *l)
   atual = l->inicio;
   while (atual)
   {
-    printf("%d\n", atual->valor);
+    printf("%d ", atual->valor);
     atual = atual->proximo;
   }
+  printf("\n");
 }
 
 void numOcorrencias(int search, TListaDupEnc *l)
@@ -126,4 +131,63 @@ void numOcorrencias(int search, TListaDupEnc *l)
     atual = atual->proximo;
   }
   printf("Número de vezes que o valor %d apareceu: %d\n", search, count);
+}
+
+int tamanhoLista(TListaDupEnc *l)
+{
+  TListaDupEnc *atual;
+  atual = l->inicio;
+  int tamanho = 0;
+  while (atual != NULL)
+  {
+    atual = atual->proximo;
+    tamanho++;
+  }
+  return tamanho;
+}
+
+TListaDupEnc *merge(TListaDupEnc *lst1, TListaDupEnc *lst2)
+{
+  TListaDupEnc *uniao = criaLista();
+  int tamLst1 = tamanhoLista(lst1);
+  int tamLst2 = tamanhoLista(lst2);
+  TListaDupEnc *atual;
+  atual = lst1->inicio;
+  TListaDupEnc *atual2;
+  atual2 = lst2->inicio;
+  if (tamLst1 > tamLst2)
+  {
+    while (atual)
+    {
+      if (atual != NULL)
+      {
+        insereFim(atual->valor, uniao);
+        atual = atual->proximo;
+      }
+
+      if (atual2 != NULL)
+      {
+        insereFim(atual2->valor, uniao);
+        atual2 = atual2->proximo;
+      }
+    }
+  }
+  else
+  {
+    while (atual2)
+    {
+      if (atual != NULL)
+      {
+        insereFim(atual->valor, uniao);
+        atual = atual->proximo;
+      }
+
+      if (atual2 != NULL)
+      {
+        insereFim(atual2->valor, uniao);
+        atual2 = atual2->proximo;
+      }
+    }
+  }
+  return uniao;
 }
